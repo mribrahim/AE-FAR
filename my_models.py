@@ -87,7 +87,7 @@ class LSTM_VAE(nn.Module):
         self.window_size = window_size
         self.input_size = input_size
         self.encoder = Encoder(input_size*3, hidden_size, latent_size, num_layers)
-        self.decoder = Decoder(latent_size + input_size*2, hidden_size, input_size, num_layers)
+        self.decoder = Decoder(latent_size, hidden_size, input_size, num_layers)
         self.feature_gat = FeatureAttentionLayer(input_size, window_size, dropout=0.2, alpha=0.2, embed_dim=None, use_gatv2=True)
         self.temporal_gat = TemporalAttentionLayer(input_size, window_size, dropout=0.2, alpha=0.2, embed_dim=None, use_gatv2=True)
         
@@ -111,7 +111,6 @@ class LSTM_VAE(nn.Module):
  
         # Reparameterize
         z = self.reparameterize(mean, log_var)
-
         # Decode
         out = self.decoder(z)
         
